@@ -17,13 +17,10 @@ class TaskRetriever
         if ($job->completed === false) {
             return [];
         }
-        $results = $job->taskResults->map(function (TaskResult $taskResult) {
-            return [
-                'type' => $taskResult->type,
-                'result' => $taskResult->result
-            ];
-        });
-        return $results->toArray();
+        $job->taskResults->setVisible(['type', 'result']);
+        $results = $job->taskResults->toArray();
+        $job->taskResults()->delete();
+        return $results;
     }
 
     public function asController(Request $request, string $jobId)

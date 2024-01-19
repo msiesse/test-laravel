@@ -7,16 +7,15 @@ describe('Tests route for retrieving tasks', function () {
         $taskJob = TaskJob::factory()
             ->hasTaskResults(1)
             ->create();
+        $result = [
+            'type' => $taskJob->taskResults->first()->type,
+            'result' => $taskJob->taskResults->first()->result
+        ];
         $response = $this->get('/api/tasks/' . $taskJob->id);
         $response->assertStatus(200);
         expect($response->json())->toBe([
             'job_uuid' => $taskJob->id,
-            'results' => [
-                [
-                    'type' => $taskJob->taskResults->first()->type,
-                    'result' => $taskJob->taskResults->first()->result
-                ]
-            ]
+            'results' => [$result]
         ]);
     });
 
@@ -37,5 +36,15 @@ describe('Tests route for retrieving tasks', function () {
             'job_uuid' => $taskJob->id,
             'results' => []
         ]);
+    });
+
+    test('wehn we retrieve all the tasks the first time, we should retrieve an empty array of results the second time', function () {
+        $taskJob = TaskJob::factory()
+            ->hasTaskResults(1)
+            ->create();
+        $response = $this->get('/api/tasks/' . $taskJob->id);
+        expect(count($response->json()["results"]))->toBe(1);
+        $response = $this->get('/api/tasks/' . $taskJob->id);
+        expect(count($response->json()["results"]))->toBe(0);
     });
 });
