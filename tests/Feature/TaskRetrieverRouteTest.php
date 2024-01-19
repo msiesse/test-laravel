@@ -15,7 +15,8 @@ describe('Tests route for retrieving tasks', function () {
         $response->assertStatus(200);
         expect($response->json())->toBe([
             'job_uuid' => $taskJob->id,
-            'results' => [$result]
+            'results' => [$result],
+            'completed' => true
         ]);
     });
 
@@ -34,7 +35,8 @@ describe('Tests route for retrieving tasks', function () {
         $response->assertStatus(200);
         expect($response->json())->toBe([
             'job_uuid' => $taskJob->id,
-            'results' => []
+            'results' => [],
+            'completed' => false
         ]);
     });
 

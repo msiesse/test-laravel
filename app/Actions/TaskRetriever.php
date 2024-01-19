@@ -15,21 +15,28 @@ class TaskRetriever
     {
         $job = TaskJob::findOrFail($jobId);
         if ($job->completed === false) {
-            return [];
+            return [
+                "results" => [],
+                "completed" => false
+            ];
         }
         $job->taskResults->setVisible(['type', 'result']);
         $results = $job->taskResults->toArray();
         $job->taskResults()->delete();
-        return $results;
+        return [
+            "results" => $results,
+            "completed" => true
+        ];
     }
 
     public function asController(Request $request, string $jobId)
     {
-        $results = $this->handle($jobId);
+        $values = $this->handle($jobId);
 
         return response()->json([
             'job_uuid' => $jobId,
-            'results' => $results,
+            'results' => $values['results'],
+            'completed' => $values['completed']
         ]);
     }
 }
