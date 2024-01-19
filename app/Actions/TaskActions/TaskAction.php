@@ -2,9 +2,9 @@
 
 namespace App\Actions\TaskActions;
 
-use App\Models\TaskJob;
 use Illuminate\Bus\Batch;
 use Lorisleiva\Actions\Concerns\AsAction;
+
 
 abstract class TaskAction
 {

@@ -1,6 +1,7 @@
 <?php
 
-use App\Actions\TaskReceiver;
+use App\Actions\TaskHandler;
+use App\Actions\TaskRetriever;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/send-tasks', TaskReceiver::class);
+Route::post('/send-tasks', TaskHandler::class)->name('task.send');
+Route::get('/tasks/{job_id}', TaskRetriever::class)->name('task.retrieve');

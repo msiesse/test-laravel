@@ -8,13 +8,14 @@ use App\Actions\TaskActions\CallSegmentsAction;
 use App\Actions\TaskActions\SatisfactionAction;
 use App\Actions\TaskActions\SummaryAction;
 use App\Models\TaskJob;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class TaskReceiver
+class TaskHandler
 {
     use asAction;
 
@@ -30,9 +31,9 @@ class TaskReceiver
                 TaskType::SUMMARY => SummaryAction::makeJob($text, $job->id),
             };
         }, $tasks);
-//        Bus::batch($taskActions)->then(function() use ($job) {
-//            $job->update(['completed' => true]);
-//        })->dispatch();
+        Bus::batch($taskActions)->then(function () use ($job) {
+            $job->update(['completed' => true]);
+        })->dispatch();
         return (string)$job->id;
     }
 
@@ -44,13 +45,26 @@ class TaskReceiver
         ];
     }
 
+    public function getValidationFailure(Validator $validator): void
+    {
+        $response = response()->json([
+            'errors' => $validator->errors(),
+        ], 422); // 422 Unprocessable Entity
+
+        throw new HttpResponseException($response);
+    }
+
     public function asController(ActionRequest $request)
     {
-        return $this->handle(
+        $job_uuid = $this->handle(
             $request->get('text'),
             array_map(function ($task) {
                 return TaskType::from($task);
             }, $request->get('tasks'))
         );
+
+        return response()->json([
+            'job_uuid' => $job_uuid,
+        ], 202);
     }
 }
