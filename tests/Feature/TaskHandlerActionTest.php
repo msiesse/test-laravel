@@ -50,4 +50,12 @@ describe('Task handler action', function () {
         TaskHandler::run('Hello world!', [TaskType::CALL_REASON, TaskType::SATISFACTION, TaskType::CALL_ACTIONS, TaskType::CALL_SEGMENTS, TaskType::SUMMARY]);
         expect(TaskJob::first()->completed)->toBe(true);
     });
+
+//    test('if a task fails, the task job should be marked as completed anyway', function () {
+//        CallReasonAction::mock()
+//            ->shouldReceive('handle')
+//            ->andThrow(new Exception('Something went wrong'));
+//        TaskHandler::run('Hello world!', [TaskType::CALL_REASON, TaskType::SATISFACTION, TaskType::CALL_ACTIONS, TaskType::CALL_SEGMENTS, TaskType::SUMMARY]);
+//        expect(TaskJob::first()->completed)->toBe(true);
+//    });
 });

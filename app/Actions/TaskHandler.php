@@ -8,6 +8,7 @@ use App\Actions\TaskActions\CallSegmentsAction;
 use App\Actions\TaskActions\SatisfactionAction;
 use App\Actions\TaskActions\SummaryAction;
 use App\Models\TaskJob;
+use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Bus;
@@ -32,9 +33,11 @@ class TaskHandler
                 TaskType::SUMMARY => SummaryAction::makeJob($text, $job->id),
             };
         }, $tasks);
-        Bus::batch($taskActions)->then(function () use ($job) {
-            $job->update(['completed' => true]);
-        })->dispatch();
+        Bus::batch($taskActions)
+            ->finally(function () use ($job) {
+                $job->update(['completed' => true]);
+            })
+            ->dispatch();
         return (string)$job->id;
     }
 

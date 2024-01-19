@@ -3,6 +3,7 @@
 namespace App\Actions\TaskActions;
 
 use App\Models\TaskResult;
+use Exception;
 use Illuminate\Bus\Batch;
 
 class CallReasonAction extends TaskAction
