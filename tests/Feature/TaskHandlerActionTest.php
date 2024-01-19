@@ -5,7 +5,6 @@ use App\Actions\TaskActions\CallReasonAction;
 use App\Actions\TaskActions\CallSegmentsAction;
 use App\Actions\TaskActions\SatisfactionAction;
 use App\Actions\TaskActions\SummaryAction;
-use App\Actions\TaskActions\TaskAction;
 use App\Actions\TaskHandler;
 use App\Actions\TaskType;
 use App\Models\TaskJob;
@@ -18,7 +17,7 @@ describe('Task handler action', function () {
         expect(TaskJob::count())->toBe(1);
     });
 
-    test('it should dispatch when only one task is requested', function (TaskType $taskType, TaskAction $action) {
+    test('it should dispatch when only one task is requested', function (TaskType $taskType, $action) {
         Queue::fake();
         TaskHandler::run('Hello world!', [$taskType]);
         $action::assertPushed(1);
