@@ -11,6 +11,7 @@ use App\Models\TaskJob;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -49,8 +50,7 @@ class TaskHandler
     {
         $response = response()->json([
             'errors' => $validator->errors(),
-        ], 422); // 422 Unprocessable Entity
-
+        ], 422);
         throw new HttpResponseException($response);
     }
 
