@@ -33,7 +33,7 @@ cp .env.example .env
 
 - You'll need to launch a queue worker manually, by default it's redis:
 ```bash
-./vendor/bin/sail artisan queue:worker
+./vendor/bin/sail artisan queue:work
 ```
 
 ## Endpoints
