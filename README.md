@@ -31,6 +31,11 @@ cp .env.example .env
 ./vendor/bin/sail artisan migrate
 ```
 
+- You'll need to launch a queue worker manually, by default it's redis:
+```bash
+./vendor/bin/sail artisan queue:worker
+```
+
 ## Endpoints
 
 - To create a job of different tasks, you can use the POST Endpoint `/api/tasks` with the following body:
