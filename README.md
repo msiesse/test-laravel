@@ -82,4 +82,5 @@ To run the tests, you can use the following command:
 - Better stress testing. It has only be done manually
 - No need to wait before all actions are processed before retrieving a part of them
 - TaskJob could be tied to the Bus rather than being a totally different model, it could improve the code a bit
+- A script to setup the repository rather than doing it manually
 
