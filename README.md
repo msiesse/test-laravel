@@ -32,6 +32,11 @@ mkdir tests/Unit
 ./vendor/bin/sail artisan migrate
 ```
 
+- You'll need to launch a queue worker manually, by default it's redis:
+```bash
+./vendor/bin/sail artisan queue:work
+```
+
 ## Endpoints
 
 - To create a job of different tasks, you can use the POST Endpoint `/api/tasks` with the following body:
@@ -72,3 +77,11 @@ To run the tests, you can use the following command:
 ```bash
 ./vendor/bin/sail artisan test
 ```
+
+## Next
+- Better error management, especially for tasks that are not successful, right now it will just totally discard the task
+- Better stress testing. It has only be done manually
+- No need to wait before all actions are processed before retrieving a part of them
+- TaskJob could be tied to the Bus rather than being a totally different model, it could improve the code a bit
+- A script to setup the repository rather than doing it manually
+
