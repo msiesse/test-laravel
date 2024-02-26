@@ -20,9 +20,10 @@ docker run --rm \
 cp .env.example .env
 ```
 
-- Then, generate the application key before launching the application with sail:
+- Then, generate the application key and create the Unit Test Folder  before launching the application with sail:
 ```bash
 echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
+mkdir tests/Unit
 ./vendor/bin/sail up
 ```
 
