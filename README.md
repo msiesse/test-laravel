@@ -20,14 +20,14 @@ docker run --rm \
 cp .env.example .env
 ```
 
-- Then, generate you can launch the application with sail:
+- Then, generate the application key before launching the application with sail:
 ```bash
+echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
 ./vendor/bin/sail up
 ```
 
-- To have everything works correctly, you need to generate the application key and the migrations:
+- To have everything works correctly, you need to launch the migrations:
 ```bash
-./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate
 ```
 
